@@ -158,11 +158,11 @@ namespace Operation_Cats
                                 break;
 
                             case ConsoleKey.LeftArrow:
-                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), MathF.PI / fps);
+                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), MathF.PI / fps * 1.5f);
                                 break;
 
                             case ConsoleKey.RightArrow:
-                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, -1, 0), MathF.PI / fps);
+                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, -1, 0), MathF.PI / fps * 1.5f);
                                 break;
                         }
 
