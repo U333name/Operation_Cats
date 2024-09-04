@@ -42,6 +42,8 @@ namespace Operation_Cats
             uint frames = 0;
             Stopwatch sw_ = new Stopwatch();
 
+            bool pause = false;
+
             while (true)
             {
                 Console.Clear();
@@ -84,6 +86,17 @@ namespace Operation_Cats
                         ConsoleKey key = Console.ReadKey(true).Key;
 
                         bool wall = false;
+
+                        if (key == ConsoleKey.P)
+                        {
+                            pause = !pause;
+                        }
+
+                        if (pause)
+                        {
+                            Thread.Sleep(100);
+                            continue;
+                        }
 
                         switch (key)
                         {
