@@ -64,7 +64,7 @@ namespace Operation_Cats
                 Wall[] walls = new Wall[wallNumber];
 
                 for (int i = 0; i < walls.Length; i++)
-                    walls[i] = new Wall(rnd.Next(-3500, 3500) / 1000f, 1f, rnd.Next(-5000, 1000) / 1000f, rnd.Next(0, 3000) / 1000f, -2f, (byte)rnd.Next(16, 232));
+                    walls[i] = new Wall(rnd.Next(-3500, 3500) / 1000f, 1f, rnd.Next(-3000, 1000) / 1000f, rnd.Next(0, 3000) / 1000f, -2f, (byte)rnd.Next(16, 232));
 
                 DrawCat(catX, catY, catZ);
 
@@ -103,6 +103,12 @@ namespace Operation_Cats
                             case ConsoleKey.W:
                                 meow.MoveCameraForward(0.1f);
 
+                                if (meow.cameraPos.X <= -2.5f)
+                                    meow.cameraPos.X = -2.45f;
+
+                                if (meow.cameraPos.X >= 2.5f)
+                                    meow.cameraPos.X = 2.45f;
+
                                 foreach (Wall w in walls)
                                 {
                                     if (w.x <= meow.cameraPos.X && w.x + w.width >= meow.cameraPos.X && w.z - 0.1f <= meow.cameraPos.Z && w.z + 0.1f >= meow.cameraPos.Z)
@@ -119,6 +125,12 @@ namespace Operation_Cats
                             case ConsoleKey.S:
                                 meow.MoveCameraBackward(0.1f);
 
+                                if (meow.cameraPos.X <= -2.5f)
+                                    meow.cameraPos.X = -2.45f;
+
+                                if (meow.cameraPos.X >= 2.5f)
+                                    meow.cameraPos.X = 2.45f;
+
                                 foreach (Wall w in walls)
                                 {
                                     if (w.x <= meow.cameraPos.X && w.x + w.width >= meow.cameraPos.X && w.z - 0.1f <= meow.cameraPos.Z && w.z + 0.1f >= meow.cameraPos.Z)
@@ -134,6 +146,9 @@ namespace Operation_Cats
 
                             case ConsoleKey.A:
                                 meow.MoveCameraLeft(0.1f);
+
+                                if (meow.cameraPos.X <= -2.5f)
+                                    meow.cameraPos.X = -2.45f;
 
                                 if (meow.cameraPos.X >= 2.5f)
                                     meow.cameraPos.X = 2.45f;
@@ -156,6 +171,9 @@ namespace Operation_Cats
 
                                 if (meow.cameraPos.X <= -2.5f)
                                     meow.cameraPos.X = -2.45f;
+
+                                if (meow.cameraPos.X >= 2.5f)
+                                    meow.cameraPos.X = 2.45f;
 
                                 foreach (Wall w in walls)
                                 {
