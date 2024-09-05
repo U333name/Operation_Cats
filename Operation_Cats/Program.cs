@@ -40,7 +40,7 @@ namespace Operation_Cats
             Random rnd = new Random(DateTime.UtcNow.GetHashCode());
             uint fps = 80;
             uint frames = 0;
-            Stopwatch sw_ = new Stopwatch();
+            Stopwatch sw_ = Stopwatch.StartNew();
 
             bool pause = false;
 
@@ -94,8 +94,15 @@ namespace Operation_Cats
 
                         if (pause)
                         {
+                            sw.Stop();
+
                             Thread.Sleep(100);
                             continue;
+                        }
+
+                        if (!pause && !sw.IsRunning)
+                        {
+                            sw.Start();
                         }
 
                         switch (key)
@@ -199,7 +206,7 @@ namespace Operation_Cats
 
                         if (key == ConsoleKey.C)
                         {
-                            if (meow.cameraPos.Z >= catZ - 1f)
+                            if (meow.cameraPos.Z >= catZ - 0.5f)
                             {
                                 sw.Stop();
                                 Thread.Sleep(2000);
@@ -227,6 +234,11 @@ namespace Operation_Cats
                     }
 
                     frames++;
+
+                    if (OperatingSystem.IsWindows())
+                    {
+                        Console.Title = $"Operation_Cats FPS: {fps} Walls: {wallNumber}";
+                    }
 
                     DrawCat(catX, catY, catZ);
 

@@ -6,7 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
+    <ApplicationIcon>oc.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="oc.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Meow3D">
