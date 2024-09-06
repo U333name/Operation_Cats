@@ -59,12 +59,12 @@ namespace Operation_Cats
 
                 float catX = 0f;
                 float catY = 0f;
-                float catZ = 0f;
+                float catZ = 4f;
 
                 Wall[] walls = new Wall[wallNumber];
 
                 for (int i = 0; i < walls.Length; i++)
-                    walls[i] = new Wall(rnd.Next(-3500, 3500) / 1000f, 1f, rnd.Next(-3000, 1000) / 1000f, rnd.Next(0, 3000) / 1000f, -2f, (byte)rnd.Next(16, 232));
+                    walls[i] = new Wall(rnd.Next(-3000, 3000) / 1000f, 1f, rnd.Next(-3000, 1000) / 1000f, rnd.Next(0, 3000) / 1000f, -2f, (byte)rnd.Next(16, 232));
 
                 DrawCat(catX, catY, catZ);
 
@@ -206,7 +206,7 @@ namespace Operation_Cats
 
                         if (key == ConsoleKey.C)
                         {
-                            if (meow.cameraPos.Z >= catZ - 0.5f)
+                            if (Vector3.Distance(meow.cameraPos, new Vector3(catX, catY, catZ)) <= 1f)
                             {
                                 sw.Stop();
                                 Thread.Sleep(2000);
@@ -218,7 +218,7 @@ namespace Operation_Cats
                             break;
                     }
 
-                    if (sw.ElapsedMilliseconds >= 10000)
+                    if (sw.ElapsedMilliseconds >= 20000)
                     {
                         DrawCatE();
                         Console.Beep();
@@ -252,7 +252,8 @@ namespace Operation_Cats
 
         static void DrawCat(float x, float y, float z)
         {
-            x += meow.cameraPos.X / 10;
+            x -= meow.cameraPos.X;
+            y -= meow.cameraPos.Y;
 
             Vector2 pos = meow.ToScreenPos(meow.Project(Vector3.Transform(new Vector3(x, y, 4), meow.cameraRotaion), out bool draw));
 
@@ -265,10 +266,10 @@ namespace Operation_Cats
             Write((int)pos.X, (int)pos.Y + 3, cat4);
             Write((int)pos.X, (int)pos.Y + 4, cat5);
 
-            if (meow.cameraPos.Z >= z - 1f)
-                Write((int)pos.X, (int)pos.Y + 5, (10f - sw.ElapsedMilliseconds / 1000f).ToString() + "Press C");
+            if (Vector3.Distance(meow.cameraPos, new Vector3(x, y, z)) <= 1f)
+                Write((int)pos.X, (int)pos.Y + 5, (20f - sw.ElapsedMilliseconds / 1000f).ToString() + "Press C");
             else
-                Write((int)pos.X, (int)pos.Y + 5, (10f - sw.ElapsedMilliseconds / 1000f).ToString());
+                Write((int)pos.X, (int)pos.Y + 5, (20f - sw.ElapsedMilliseconds / 1000f).ToString());
         }
 
         static void DrawCatE()
