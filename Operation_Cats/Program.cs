@@ -6,18 +6,18 @@ namespace Operation_Cats
 {
     internal class Program
     {
-        static readonly string cat1 = " █▄▄█       ";
-        static readonly string cat2 = "▐O██O▌     █";
-        static readonly string cat3 = " ▀████████▀▀";
-        static readonly string cat4 = "  ▐███████  ";
-        static readonly string cat5 = "   █    █   ";
-
         static readonly string catE1 = "Meow           ";
         static readonly string catE2 = "    █▄▄█       ";
         static readonly string catE3 = "   ▐O██O▌     █";
         static readonly string catE4 = "    ▀████████▀▀";
         static readonly string catE5 = "     ▐███████  ";
         static readonly string catE6 = "      █    █   ";
+
+        static readonly string cat1 = " █▄▄█       ";
+        static readonly string cat2 = "▐O██O▌     █";
+        static readonly string cat3 = " ▀████████▀▀";
+        static readonly string cat4 = "  ▐███████  ";
+        static readonly string cat5 = "   █    █   ";
 
         static Meow meow = new Meow();
         static Stopwatch sw = new Stopwatch();
@@ -57,16 +57,19 @@ namespace Operation_Cats
 
                 sw = new Stopwatch();
 
-                float catX = 0f;
+                float catX = rnd.Next(-2000, 2000) / 1000f;
                 float catY = 0f;
-                float catZ = 4f;
+                float catZ = 0f;
 
                 Wall[] walls = new Wall[wallNumber];
 
-                for (int i = 0; i < walls.Length; i++)
-                    walls[i] = new Wall(rnd.Next(-3000, 3000) / 1000f, 1f, rnd.Next(-3000, 1000) / 1000f, rnd.Next(0, 3000) / 1000f, -2f, (byte)rnd.Next(16, 232));
+                float wallZ = -4f;
 
-                DrawCat(catX, catY, catZ);
+                for (int i = 0; i < walls.Length; i++)
+                {
+                    walls[i] = new Wall(rnd.Next(-2500, 2500) / 1000f, 1f, wallZ, rnd.Next(0, 2000) / 1000f, -2f, (byte)rnd.Next(16, 232));
+                    wallZ += 0.4f;
+                }
 
                 try
                 {
@@ -118,7 +121,7 @@ namespace Operation_Cats
 
                                 foreach (Wall w in walls)
                                 {
-                                    if (w.x <= meow.cameraPos.X && w.x + w.width >= meow.cameraPos.X && w.z - 0.1f <= meow.cameraPos.Z && w.z + 0.1f >= meow.cameraPos.Z)
+                                    if (w.x <= meow.cameraPos.X && w.x + w.width >= meow.cameraPos.X && w.z - 0.05f <= meow.cameraPos.Z && w.z + 0.05f >= meow.cameraPos.Z)
                                     {
                                         wall = true;
                                         break;
@@ -196,17 +199,17 @@ namespace Operation_Cats
                                 break;
 
                             case ConsoleKey.LeftArrow:
-                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), MathF.PI / fps * 1.5f);
+                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), MathF.PI / fps * 2.5f);
                                 break;
 
                             case ConsoleKey.RightArrow:
-                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, -1, 0), MathF.PI / fps * 1.5f);
+                                meow.cameraRotaion *= Quaternion.CreateFromAxisAngle(new Vector3(0, -1, 0), MathF.PI / fps * 2.5f);
                                 break;
                         }
 
                         if (key == ConsoleKey.C)
                         {
-                            if (Vector3.Distance(meow.cameraPos, new Vector3(catX, catY, catZ)) <= 1f)
+                            if (Vector3.Distance(meow.cameraPos, new Vector3(catX, catY, catZ)) <= 0.5f)
                             {
                                 sw.Stop();
                                 Thread.Sleep(2000);
@@ -218,7 +221,7 @@ namespace Operation_Cats
                             break;
                     }
 
-                    if (sw.ElapsedMilliseconds >= 20000)
+                    if (sw.ElapsedMilliseconds >= 15000)
                     {
                         DrawCatE();
                         Console.Beep();
@@ -240,7 +243,7 @@ namespace Operation_Cats
                         Console.Title = $"Operation_Cats FPS: {fps} Walls: {wallNumber}";
                     }
 
-                    DrawCat(catX, catY, catZ);
+                    DrawCat(catX, catY, catZ);  
 
                     foreach (Wall w in walls)
                         w.Draw(meow);
@@ -252,24 +255,24 @@ namespace Operation_Cats
 
         static void DrawCat(float x, float y, float z)
         {
-            x -= meow.cameraPos.X;
-            y -= meow.cameraPos.Y;
+            Vector3 vec = Vector3.Transform(new Vector3(meow.cameraPos.X, 0, 0), meow.cameraRotaion);
 
-            Vector2 pos = meow.ToScreenPos(meow.Project(Vector3.Transform(new Vector3(x, y, 4), meow.cameraRotaion), out bool draw));
+            Vector3 pos_ = Vector3.Transform(new Vector3(x, y, 0) - vec, meow.cameraRotaion);
+            Vector2 pos = meow.ToScreenPos(new Vector2(pos_.X, pos_.Y));
 
-            if (!draw)
-                return;
+            int _x = (int)pos.X;
+            int _y = (int)pos.Y;
 
-            Write((int)pos.X, (int)pos.Y, cat1);
-            Write((int)pos.X, (int)pos.Y + 1, cat2);
-            Write((int)pos.X, (int)pos.Y + 2, cat3);
-            Write((int)pos.X, (int)pos.Y + 3, cat4);
-            Write((int)pos.X, (int)pos.Y + 4, cat5);
+            Write(_x, _y, cat1);
+            Write(_x, _y + 1, cat2);
+            Write(_x, _y + 2, cat3);
+            Write(_x, _y + 3, cat4);
+            Write(_x, _y + 4, cat5);
 
-            if (Vector3.Distance(meow.cameraPos, new Vector3(x, y, z)) <= 1f)
-                Write((int)pos.X, (int)pos.Y + 5, (20f - sw.ElapsedMilliseconds / 1000f).ToString() + "Press C");
+            if (Vector3.Distance(meow.cameraPos, new Vector3(x, y, z)) <= 0.5f)
+                Write(_x, _y + 5, (15 - sw.Elapsed.TotalSeconds).ToString() + " Press C");
             else
-                Write((int)pos.X, (int)pos.Y + 5, (20f - sw.ElapsedMilliseconds / 1000f).ToString());
+                Write(_x, _y + 5, (15 - sw.Elapsed.TotalSeconds).ToString());
         }
 
         static void DrawCatE()
