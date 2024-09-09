@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Reference Include="Meow3D">
-      <HintPath>..\..\Meow3D\Meow3D\bin\Release\netstandard2.1\Meow3D.dll</HintPath>
+      <HintPath>Meow3D.dll</HintPath>
     </Reference>
   </ItemGroup>
 
